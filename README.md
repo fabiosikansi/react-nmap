@@ -1,5 +1,4 @@
 # react-nmap
----
 
 Basic [nmap.js] react component
 
@@ -13,7 +12,6 @@ and
 `
 npm run build-example
 `
-after clone the repository
 
 ### Usage:
 ```javascript
