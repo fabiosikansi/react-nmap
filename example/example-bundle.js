@@ -61,7 +61,7 @@
 	    {id: 4,x: 40, y: 40,weight: 1,class: 4},
 	    {id: 5,x: 50, y: 50,weight: 1,class: 5}
 	];
-	ReactDOM.render(<Nmap data={data} width="1000" height="600" svgId="nmap" method="ac" />,document.getElementById('app'));
+	ReactDOM.render(<Nmap data={data} width="1000" height="600" svgId="nmap" method="ac" colorScale={d3.scale.category10()} />,document.getElementById('app'));
 	*/
 	
 	//Data from CSV
