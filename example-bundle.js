@@ -65,9 +65,26 @@
 	*/
 	
 	//Data from CSV
-	d3.csv("data/configuration01.csv", function (error, data) {
-	    ReactDOM.render(React.createElement(_reactNmap2.default, { data: data, width: "1000", height: "600", svgId: "nmap", method: "ac" }), document.getElementById('app'));
+	
+	
+	$("#selectConfig").on("change", function () {
+	    loadDataset(this.value);
 	});
+	
+	function loadDataset(dataset) {
+	    d3.csv("data/" + dataset, function (error, data) {
+	        var windowWidth = $(window).width() - 10;
+	        var windowHeight = $(window).height() - 70;
+	        $("#app").html("");
+	        var colorScale = ["configuration01.csv", "londonBoroughsCrimeRates.csv", "londonBoroughsHousePrice.csv", "londonBoroughsPopulation.csv"].indexOf(dataset) > -1 ? d3.scale.linear().domain(d3.extent(data, function (d) {
+	            return parseFloat(d.class);
+	        })).range(["#c6dbef", "#08306b"]) : d3.scale.category10();
+	
+	        ReactDOM.render(React.createElement(_reactNmap2.default, { data: data, width: windowWidth, height: windowHeight, colorScale: colorScale, svgId: "nmap", method: "ac" }), document.getElementById('app'));
+	    });
+	}
+	
+	loadDataset($("#selectConfig").val());
 
 /***/ },
 /* 1 */
@@ -100,6 +117,7 @@
 	        key: "componentDidMount",
 	        value: function componentDidMount() {
 	            var data = this.props.data;
+	            var cs = this.props.colorScale;
 	            var elements = [];
 	            for (var i = 0; i < data.length; i++) {
 	                elements.push(new nmap_element({
@@ -125,7 +143,7 @@
 	            }).attr("y", function (d) {
 	                return d.attr().y;
 	            }).attr("fill", function (d) {
-	                return "rgba(128,128," + Math.round(parseFloat(d.attr().element.attr().klass) * 255) + ",1)";
+	                return cs(parseFloat(d.attr().element.attr().klass));
 	            }).attr("width", function (d) {
 	                return d.attr().width;
 	            }).attr("height", function (d) {
@@ -135,7 +153,7 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            return React.createElement("svg", { id: this.props.svgId, width: this.props.width, height: this.props.height, method: "ew" });
+	            return React.createElement("svg", { id: this.props.svgId, width: this.props.width, height: this.props.height });
 	        }
 	    }]);
 	
