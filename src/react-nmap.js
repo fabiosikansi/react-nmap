@@ -6,6 +6,7 @@ export default class Nmap extends React.Component {
 
     componentDidMount() {
         var data = this.props.data;
+        var cs = this.props.colorScale;
         var elements = [];
         for(var i = 0; i<data.length; i++){
             elements.push(new nmap_element({
@@ -24,20 +25,20 @@ export default class Nmap extends React.Component {
             nmapData = map.alternateCut({elements:elements});
         }
 
-        var svg = d3.select("#" + this.props.svgId);
+        const svg = d3.select("#" + this.props.svgId);
         svg.select("g.nmap").remove();
         svg.append("g").attr("class", "nmap").selectAll("rect")
             .data(nmapData).enter().append("rect")
             .attr("x", function(d){ return d.attr().x })
             .attr("y", function(d){ return d.attr().y })
-            .attr("fill", function(d){ return "rgba(128,128,"+Math.round(parseFloat(d.attr().element.attr().klass)*255)+",1)" })
+            .attr("fill", function (d) { return cs(parseFloat(d.attr().element.attr().klass))})
             .attr("width", function(d){ return d.attr().width })
             .attr("height", function(d){ return d.attr().height });
     }
 
     render() {
         return (
-            <svg id={this.props.svgId} width={this.props.width} height={this.props.height} method="ew"></svg>
+            <svg id={this.props.svgId} width={this.props.width} height={this.props.height}></svg>
     );
     }
 }

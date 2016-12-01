@@ -13,6 +13,26 @@ ReactDOM.render(<Nmap data={data} width="1000" height="600" svgId="nmap" method=
 */
 
 //Data from CSV
-d3.csv("data/configuration01.csv", function(error, data) {
-    ReactDOM.render(<Nmap data={data} width="1000" height="600" svgId="nmap" method="ac" />,document.getElementById('app'));
+
+
+$("#selectConfig").on("change", function() {
+    loadDataset(this.value);
 });
+
+function loadDataset (dataset) {
+    d3.csv("data/" + dataset, function(error, data) {
+        var windowWidth = $(window).width() - 10;
+        var windowHeight = $(window).height() - 70;
+        $("#app").html("");
+        var colorScale = (["configuration01.csv","londonBoroughsCrimeRates.csv","londonBoroughsHousePrice.csv","londonBoroughsPopulation.csv"].indexOf(dataset) > -1) ?
+            d3.scale.linear()
+                .domain(d3.extent(data, function (d) { return parseFloat(d.class)}))
+                .range(["#c6dbef","#08306b"])
+            :  d3.scale.category10();
+
+
+        ReactDOM.render(<Nmap data={data} width={windowWidth} height={windowHeight} colorScale={colorScale} svgId="nmap" method="ac" />,document.getElementById('app'));
+    });
+}
+
+loadDataset($("#selectConfig").val());
