@@ -1,6 +1,6 @@
 # react-nmap
 
-Basic [nmap.js] (Neighborhood Preservation Space-filling Algorithm [1]) react component
+Basic [nmap.js] \(Neighborhood Preservation Space-filling Algorithm [1]\) react component
 
 [Live demo](https://fabiosikansi.github.io/react-nmap/)
 
